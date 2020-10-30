@@ -57,7 +57,9 @@ public class MyScanner implements AutoCloseable {
     private String nextToken(Predicate<Character> isWordCharacter) throws IOException {
         StringBuilder sb = new StringBuilder();
         int c = nextChar();
-        if ((char) c == '\n' || (char) c == '\r') {
+
+        // :NOTE: Дублирование
+        if (c == '\n' || c == '\r') {
             read();
             return null;
         }
@@ -70,6 +72,7 @@ public class MyScanner implements AutoCloseable {
         if (c == -1) {
             return sb.toString();
         }
+        // :NOTE: Выделение функций
         do {
             sb.append((char) c);
         } while ((char) nextChar() != '\n' && (char) nextChar() != '\r' && (c = read()) != -1 && isWordCharacter.test((char) c));
@@ -84,6 +87,7 @@ public class MyScanner implements AutoCloseable {
         return Character.isLetter(ch) || ch == '\'' || Character.getType(ch) == Character.DASH_PUNCTUATION;
     }
 
+    // :NOTE: Пробельные символы
     private static boolean charOfNumber(char ch) {
         return (ch != ' ');
     }
@@ -105,16 +109,18 @@ public class MyScanner implements AutoCloseable {
             }
             for (int i = sign; i < x.length(); i++) {
                 char c = Character.toUpperCase(x.charAt(i));
-                if (c >= 'A' && c <= 'J') {
+                if ('A' <= c && c <= 'J') {
                     sb.append(c - 'A');
                 } else {
-                    if (!Character.isDigit(c))
+                    if (!Character.isDigit(c)) {
                         throw new NumberFormatException(x + " is not number");
-                    sb.append(Integer.parseInt("" + c));
+                    }
+                    sb.append(Character.digit(c, 10));
                 }
             }
             try {
                 int q = Integer.parseInt(sb.toString());
+                // :NOTE: Отдельная обработка знака??
                 if (sign != 0) {
                     q = -q;
                 }

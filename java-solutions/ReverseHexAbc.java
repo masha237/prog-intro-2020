@@ -29,9 +29,9 @@ public class ReverseHexAbc {
                 }
                 ind[index] = j;
                 index++;
-                if (scanner.nextChar() == -1) {
-                    break;
-                }
+//                if (scanner.nextChar() == -1) {
+//                    break;
+//                }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
