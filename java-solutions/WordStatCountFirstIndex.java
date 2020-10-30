@@ -32,6 +32,7 @@ public class WordStatCountFirstIndex {
                 if (word == null || word.isEmpty()) {
                     continue;
                 }
+                //:NODE: use java functions
                 StringBuilder s = new StringBuilder();
                 for (int i = 0; i < word.length(); i++) {
                     s.append(Character.toLowerCase(word.charAt(i)));
