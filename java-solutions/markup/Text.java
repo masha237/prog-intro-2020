@@ -1,6 +1,6 @@
 package markup;
 
-public class Text implements Element {
+public class Text implements AllText {
     private final String text;
 
     public Text(String text) {

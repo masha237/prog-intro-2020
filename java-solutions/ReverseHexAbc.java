@@ -29,14 +29,8 @@ public class ReverseHexAbc {
                 }
                 ind[index] = j;
                 index++;
-//                if (scanner.nextChar() == -1) {
-//                    break;
-//                }
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException | IOException e) {
             System.out.println(e.getMessage());
         }
         try (Writer w = new BufferedWriter(new OutputStreamWriter(System.out))) {

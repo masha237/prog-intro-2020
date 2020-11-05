@@ -8,7 +8,7 @@ public class WordStatCountFirstIndex {
         sb.append(a.getVal(0));
         for (int i = 1; i < a.getSz(); i++) {
             if (a.getValLine(i) != a.getValLine(i - 1)) {
-                sb.append(" " + a.getVal(i));
+                sb.append(" ").append(a.getVal(i));
             }
         }
         return sb.toString();
@@ -32,11 +32,7 @@ public class WordStatCountFirstIndex {
                 if (word == null || word.isEmpty()) {
                     continue;
                 }
-                StringBuilder s = new StringBuilder();
-                for (int i = 0; i < word.length(); i++) {
-                    s.append(Character.toLowerCase(word.charAt(i)));
-                }
-                word = s.toString();
+                word = word.toLowerCase();
                 number++;
                 if (!mp.containsKey(word)) {
                     mp.put(word, ind++);
@@ -49,7 +45,7 @@ public class WordStatCountFirstIndex {
         } catch (IOException e) {
             System.out.println("Cannot read file: " + e.getMessage());
         }
-        List<Map.Entry<String, Integer>> pairs = pairs = new ArrayList<>(mp.entrySet());
+        List<Map.Entry<String, Integer>> pairs = new ArrayList<>(mp.entrySet());
 
         pairs.sort(Comparator.comparingInt((Map.Entry<String, Integer> p) -> arr.get(p.getValue()).getSz()));
         try (Writer writer = new BufferedWriter(new FileWriter(args[1], StandardCharsets.UTF_8))) {

@@ -3,8 +3,8 @@ import java.io.Reader;
 import java.util.function.Predicate;
 
 public class MyScanner implements AutoCloseable {
-    private Reader reader;
-    private char[] buffer = new char[1 << 15];
+    private final Reader reader;
+    private final char[] buffer = new char[1 << 15];
     private int index = 0;
     private int sz = 0;
 
@@ -54,32 +54,24 @@ public class MyScanner implements AutoCloseable {
         }
     }
 
+    private boolean isEndOfLine(int c) {
+        return (c == '\n' || c == '\r');
+    }
+
     private String nextToken(Predicate<Character> isWordCharacter) throws IOException {
         StringBuilder sb = new StringBuilder();
-        int c = nextChar();
-
-        // :NOTE: Дублирование
-        if (c == '\n' || c == '\r') {
-            read();
-            return null;
-        }
-        while ((c = read()) != -1 && !isWordCharacter.test((char) c)) {
-            if ((char) c == '\n' || (char) c == '\r') {
-                read();
+        int c;
+        while ((c = read()) != -1 && ((!isWordCharacter.test((char) c)) || isEndOfLine(c))) {
+            if (isEndOfLine(c)) {
                 return null;
             }
         }
         if (c == -1) {
             return sb.toString();
         }
-        // :NOTE: Выделение функций
         do {
             sb.append((char) c);
-        } while ((char) nextChar() != '\n' && (char) nextChar() != '\r' && (c = read()) != -1 && isWordCharacter.test((char) c));
-        if (((char) nextChar() == '\n' || (char) nextChar() == '\r') && sb.length() == 0) {
-            read();
-            return null;
-        }
+        } while (!isEndOfLine(nextChar()) && (c = read()) != -1 && isWordCharacter.test((char) c));
         return sb.toString();
     }
 
@@ -87,9 +79,8 @@ public class MyScanner implements AutoCloseable {
         return Character.isLetter(ch) || ch == '\'' || Character.getType(ch) == Character.DASH_PUNCTUATION;
     }
 
-    // :NOTE: Пробельные символы
     private static boolean charOfNumber(char ch) {
-        return (ch != ' ');
+        return (Character.getType(ch) != Character.DIRECTIONALITY_WHITESPACE);
     }
 
     public String nextWord() throws IOException {
@@ -101,38 +92,30 @@ public class MyScanner implements AutoCloseable {
         if (x == null || x.isEmpty()) {
             return null;
         }
-        if (x.length() < 2 || Character.toUpperCase(x.charAt(1)) != 'X') {
+        x = x.toUpperCase();
+        try {
+            return Long.decode(x).intValue();
+        } catch (NumberFormatException e) {
             StringBuilder sb = new StringBuilder();
             int sign = 0;
             if (x.charAt(0) == '-' || x.charAt(0) == '+') {
                 sign = 1;
+                sb.append(x.charAt(0));
             }
             for (int i = sign; i < x.length(); i++) {
-                char c = Character.toUpperCase(x.charAt(i));
+                char c = x.charAt(i);
                 if ('A' <= c && c <= 'J') {
                     sb.append(c - 'A');
                 } else {
-                    if (!Character.isDigit(c)) {
-                        throw new NumberFormatException(x + " is not number");
-                    }
                     sb.append(Character.digit(c, 10));
                 }
             }
             try {
-                int q = Integer.parseInt(sb.toString());
-                // :NOTE: Отдельная обработка знака??
-                if (sign != 0) {
-                    q = -q;
-                }
-                return q;
-            } catch (NumberFormatException e) {
+                return Integer.parseInt(sb.toString());
+            } catch (NumberFormatException e2) {
                 throw new NumberFormatException(x + " is not number");
             }
         }
-        try {
-            return Long.decode(x).intValue();
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException(x + " is not number");
-        }
+
     }
 }

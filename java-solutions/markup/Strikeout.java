@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-public class Strikeout extends AbstractElement implements Element {
-    public Strikeout(List<Element> a) {
+public class Strikeout extends AbstractText {
+    public Strikeout(List<AllText> a) {
         super(a, "~", "s");
     }
 }
