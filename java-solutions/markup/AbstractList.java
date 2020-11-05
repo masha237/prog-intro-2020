@@ -2,18 +2,18 @@ package markup;
 
 import java.util.List;
 
-public abstract class AbstractComplexElement implements ComplexElement {
+public abstract class AbstractList implements ComplexElement {
     protected final List<ListItem> a;
-    private final String tagBCb;
+    private final String tagBBC;
 
-    public AbstractComplexElement(List<ListItem> a, String tagBCb) {
+    public AbstractList(List<ListItem> a, String tagBBC) {
         this.a = a;
-        this.tagBCb = tagBCb;
+        this.tagBBC = tagBBC;
     }
 
     @Override
     public void toBBCode(StringBuilder sb) {
-        sb.append(tagBCb);
+        sb.append(tagBBC);
         for (ListItem element : a) {
             element.toBBCode(sb);
         }

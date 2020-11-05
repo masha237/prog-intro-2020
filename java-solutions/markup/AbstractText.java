@@ -5,12 +5,12 @@ import java.util.List;
 public abstract class AbstractText implements AllText {
     protected final List<AllText> a;
     private final String tagMD;
-    private final String tagBCb;
+    private final String tagBBC;
 
-    public AbstractText(List<AllText> a, String tagMD, String tagBCb) {
+    public AbstractText(List<AllText> a, String tagMD, String tagBBC) {
         this.a = a;
         this.tagMD = tagMD;
-        this.tagBCb = tagBCb;
+        this.tagBBC = tagBBC;
     }
 
     @Override
@@ -24,10 +24,10 @@ public abstract class AbstractText implements AllText {
 
     @Override
     public void toBBCode(StringBuilder sb) {
-        sb.append("[").append(tagBCb).append("]");
+        sb.append("[").append(tagBBC).append("]");
         for (AllText element : a) {
             element.toBBCode(sb);
         }
-        sb.append("[/").append(tagBCb).append("]");
+        sb.append("[/").append(tagBBC).append("]");
     }
 }
