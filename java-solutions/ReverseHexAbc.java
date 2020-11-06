@@ -31,14 +31,15 @@ public class ReverseHexAbc {
                 index++;
             }
         } catch (NumberFormatException | IOException e) {
-            System.out.println(e.getMessage());
+            // :NOTE: Контекст
+            System.out.println("Input error: " + e.getMessage());
         }
-        try (Writer w = new BufferedWriter(new OutputStreamWriter(System.out))) {
+        try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(System.out))) {
             for (int i = index - 1; i >= 0; i--) {
                 for (int j = ind[i] - 1; j >= 0; j--) {
                     w.write(b[i][j] + " ");
                 }
-                w.write(System.lineSeparator());
+                w.newLine();
             }
         } catch (IOException e) { 
             System.out.println(e.getMessage());

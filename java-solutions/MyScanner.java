@@ -58,6 +58,7 @@ public class MyScanner implements AutoCloseable {
         return (c == '\n' || c == '\r');
     }
 
+    // :NOTE: Predicate<Character> -> поле
     private String nextToken(Predicate<Character> isWordCharacter) throws IOException {
         StringBuilder sb = new StringBuilder();
         int c;
