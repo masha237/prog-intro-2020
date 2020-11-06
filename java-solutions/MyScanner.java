@@ -80,7 +80,7 @@ public class MyScanner implements AutoCloseable {
     }
 
     private static boolean charOfNumber(char ch) {
-        return (Character.getType(ch) != Character.DIRECTIONALITY_WHITESPACE);
+        return (Character.getType(ch) != Character.SPACE_SEPARATOR);
     }
 
     public String nextWord() throws IOException {
