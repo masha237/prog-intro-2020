@@ -61,7 +61,7 @@ public class MyScanner implements AutoCloseable {
     private String nextToken(Predicate<Character> isWordCharacter) throws IOException {
         StringBuilder sb = new StringBuilder();
         int c;
-        while ((c = read()) != -1 && ((!isWordCharacter.test((char) c)) || isEndOfLine(c))) {
+        while ((c = read()) != -1 && (!isWordCharacter.test((char) c) || isEndOfLine(c))) {
             if (isEndOfLine(c)) {
                 return null;
             }
