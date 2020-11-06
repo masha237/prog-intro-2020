@@ -2,12 +2,12 @@ package markup;
 
 import java.util.List;
 
-public abstract class AbstractText implements AllText {
+public abstract class ComplexText implements AllText {
     protected final List<AllText> a;
     private final String tagMD;
     private final String tagBBC;
 
-    public AbstractText(List<AllText> a, String tagMD, String tagBBC) {
+    public ComplexText(List<AllText> a, String tagMD, String tagBBC) {
         this.a = a;
         this.tagMD = tagMD;
         this.tagBBC = tagBBC;
