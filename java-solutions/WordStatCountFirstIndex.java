@@ -18,6 +18,7 @@ public class WordStatCountFirstIndex {
             System.out.print("args size != 2");
             return;
         }
+        //:NOTES: just renumerate indexs
         List<IntList> arr = new ArrayList<>();
         Map<String, Integer> mp = new LinkedHashMap<>();
         try (MyScanner reader = new MyScanner(new FileReader(args[0], StandardCharsets.UTF_8))) {
