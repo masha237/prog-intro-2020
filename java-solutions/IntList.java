@@ -1,21 +1,15 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class IntList implements Comparable<IntList> {
+public class IntList {
     private int[] a;
     private int[] line;
     private int sz;
-    private int index;
 
     public IntList() {
         a = new int[1];
         line = new int[1];
         sz = 0;
-        index = 0;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public int getSz() {
@@ -28,7 +22,7 @@ public class IntList implements Comparable<IntList> {
         if (sz != 0)
             sb.append(a[0]);
         for (int i = 1; i < sz; i++) {
-            sb.append(" " + a[i]);
+            sb.append(" ").append(a[i]);
         }
         return sb.toString();
     }
@@ -54,7 +48,7 @@ public class IntList implements Comparable<IntList> {
         line = Arrays.copyOf(line, line.length * 2);
     }
 
-    private void nerrow() {
+    private void narrow() {
         a = Arrays.copyOf(a, a.length / 2);
         line = Arrays.copyOf(line, line.length / 2);
     }
@@ -66,14 +60,8 @@ public class IntList implements Comparable<IntList> {
             expand();
         }
         if (a.length >= sz * 4) {
-            nerrow();
+            narrow();
         }
-    }
-
-
-    @Override
-    public int compareTo(IntList intList) {
-        return Integer.compare(sz, intList.getSz());
     }
 }
 
