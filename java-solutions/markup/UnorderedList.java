@@ -4,6 +4,6 @@ import java.util.List;
 
 public class UnorderedList extends AbstractList {
     public UnorderedList(List<ListItem> a) {
-        super(a, "[list]");
+        super(a, "[list]", "[/list]");
     }
 }

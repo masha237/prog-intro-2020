@@ -2,21 +2,18 @@ package markup;
 
 import java.util.List;
 
-public class Paragraph implements ComplexElement {
-    List<AllText> a;
-    public Paragraph(List<AllText> a) {
+public class Paragraph implements ListElement, Markdown {
+    private final List<ParagraphElement> a;
+
+    public Paragraph(List<ParagraphElement> a) {
         this.a = a;
     }
 
     public void toMarkdown(StringBuilder sb) {
-        for (AllText element : a) {
-            element.toMarkdown(sb);
-        }
+        Util.toMarkdown(sb, a, "");
     }
 
     public void toBBCode(StringBuilder sb) {
-        for (AllText element : a) {
-            element.toBBCode(sb);
-        }
+        Util.toBBCode(sb, a, "", "");
     }
 }

@@ -1,6 +1,6 @@
 package markup;
 
-public class Text implements AllText {
+public class Text implements ParagraphElement {
     private final String text;
 
     public Text(String text) {
@@ -16,5 +16,4 @@ public class Text implements AllText {
     public void toBBCode(StringBuilder sb) {
         sb.append(text);
     }
-
 }

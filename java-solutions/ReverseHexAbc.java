@@ -31,7 +31,6 @@ public class ReverseHexAbc {
                 index++;
             }
         } catch (NumberFormatException | IOException e) {
-            // :NOTE: Контекст
             System.out.println("Input error: " + e.getMessage());
         }
         try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(System.out))) {
@@ -42,7 +41,7 @@ public class ReverseHexAbc {
                 w.newLine();
             }
         } catch (IOException e) { 
-            System.out.println(e.getMessage());
+            System.out.println("Output error: " + e.getMessage());
         }
     }
 }

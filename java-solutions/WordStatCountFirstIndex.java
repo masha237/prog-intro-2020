@@ -19,8 +19,7 @@ public class WordStatCountFirstIndex {
             return;
         }
         //:NOTES: just renumerate indexs
-        List<IntList> arr = new ArrayList<>();
-        Map<String, Integer> mp = new LinkedHashMap<>();
+        Map<String, IntList> mp = new LinkedHashMap<>();
         try (MyScanner reader = new MyScanner(new FileReader(args[0], StandardCharsets.UTF_8))) {
             String word;
             int ind = 0, number = 0, line = 0;
@@ -36,27 +35,25 @@ public class WordStatCountFirstIndex {
                 word = word.toLowerCase();
                 number++;
                 if (!mp.containsKey(word)) {
-                    mp.put(word, ind++);
-                    arr.add(new IntList());
+                    mp.put(word, new IntList());
                 }
-                arr.get(mp.get(word)).add(number, line);
+                mp.get(word).add(number, line);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Don't have input file: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("Cannot read file: " + e.getMessage());
         }
-        List<Map.Entry<String, Integer>> pairs = new ArrayList<>(mp.entrySet());
+        List<Map.Entry<String, IntList>> pairs = new ArrayList<>(mp.entrySet());
 
-        pairs.sort(Comparator.comparingInt((Map.Entry<String, Integer> p) -> arr.get(p.getValue()).getSz()));
+        pairs.sort(Comparator.comparingInt((Map.Entry<String, IntList> p) -> p.getValue().getSz()));
         try (Writer writer = new BufferedWriter(new FileWriter(args[1], StandardCharsets.UTF_8))) {
-            for (Map.Entry<String, Integer> i : pairs) {
+            for (Map.Entry<String, IntList> i : pairs) {
                 writer.write(i.getKey());
                 writer.write(" ");
-                int c = i.getValue();
-                writer.write(arr.get(c).getSz() + "");
+                writer.write(i.getValue().getSz() + "");
                 writer.write(" ");
-                writer.write(getAns(arr.get(c)));
+                writer.write(getAns(i.getValue()));
                 writer.write(System.lineSeparator());
             }
         }
