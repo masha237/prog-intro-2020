@@ -6,4 +6,5 @@ _*
 
 # Do not store .class files
 *.class
+*Test.java
 */base/*
