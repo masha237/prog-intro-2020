@@ -1,4 +1,4 @@
 package markup;
 
-public interface ListElement extends BBCode {
+public interface ListElement extends Markup {
 }

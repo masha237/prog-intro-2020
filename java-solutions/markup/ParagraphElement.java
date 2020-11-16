@@ -1,4 +1,4 @@
 package markup;
 
-public interface ParagraphElement extends Markdown, BBCode {
+public interface ParagraphElement extends Markup {
 }
