@@ -4,27 +4,31 @@ import java.util.List;
 
 public abstract class AbstractElement implements Markup {
     private final List<? extends Markup> a;
-    private final String tagM, tagBb, tagBe;
-    AbstractElement(List<? extends Markup> a, String tagM, String tagBb, String tagBe) {
+
+    AbstractElement(List<? extends Markup> a) {
         this.a = a;
-        this.tagM = tagM;
-        this.tagBe = tagBe;
-        this.tagBb = tagBb;
     }
 
     public void toMarkdown(StringBuilder sb) {
-        sb.append(tagM);
+        sb.append(getTagM());
         for (Markup markup : a) {
             markup.toMarkdown(sb);
         }
-        sb.append(tagM);
+        sb.append(getTagM());
     }
 
+    protected abstract String getTagM();
+
     public void toBBCode(StringBuilder sb) {
-        sb.append(tagBb);
+        sb.append(getTagBb());
         for (Markup markup : a) {
             markup.toBBCode(sb);
         }
-        sb.append(tagBe);
+        sb.append(getTagBe());
     }
+
+    protected abstract String getTagBb();
+
+    protected abstract String getTagBe();
+
 }

@@ -2,8 +2,16 @@ package markup;
 
 import java.util.List;
 
-public class Strong extends AbstractElement implements ParagraphElement {
+public class Strong extends ComplexText {
     public Strong(List<ParagraphElement> a) {
-        super(a, "__", "[b]", "[/b]");
+        super(a);
+    }
+
+    public String getTag() {
+        return "b";
+    }
+
+    public String getTagM() {
+        return "__";
     }
 }
