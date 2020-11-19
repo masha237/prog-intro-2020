@@ -17,8 +17,6 @@ public abstract class AbstractElement implements Markup {
         sb.append(getTagM());
     }
 
-    protected abstract String getTagM();
-
     public void toBBCode(StringBuilder sb) {
         sb.append(getTagBb());
         for (Markup markup : a) {
@@ -26,6 +24,8 @@ public abstract class AbstractElement implements Markup {
         }
         sb.append(getTagBe());
     }
+
+    protected abstract String getTagM();
 
     protected abstract String getTagBb();
 

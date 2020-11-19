@@ -16,6 +16,6 @@ public class ListItem extends AbstractElement {
     }
 
     public String getTagM() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("ListItem hasn't toMarkdown");
     }
 }
