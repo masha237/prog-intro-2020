@@ -26,7 +26,7 @@ public class Main {
         return Integer.parseInt(k);
     }
     public static void main(String[] args) {
-        final Game game = new Game(false, new CheaterPlayer(), new RandomPlayer());
+        final Game game = new Game(false, new RandomPlayer(), new RandomPlayer());
         int result;
         do {
             int m = scan("m");
