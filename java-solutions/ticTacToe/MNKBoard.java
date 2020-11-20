@@ -6,18 +6,19 @@ import java.util.Map;
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public class MNKBoard implements Board, Position {
-    private static final Map<Cell, Character> SYMBOLS = Map.of(
+public abstract class MNKBoard implements Board, Position {
+    protected static final Map<Cell, Character> SYMBOLS = Map.of(
             Cell.X, 'X',
             Cell.O, 'O',
-            Cell.E, '.'
+            Cell.E, '.',
+            Cell.N, ' '
     );
 
     private final Cell[][] cells;
     private Cell turn;
     private final int row, col, k;
-    private int number = 0;
-    public MNKBoard(int row, int col, int k) {
+    private int maxMove;
+    public MNKBoard(int row, int col, int k, int maxMove) {
         this.cells = new Cell[row][col];
         for (Cell[] rows : cells) {
             Arrays.fill(rows, Cell.E);
@@ -26,22 +27,17 @@ public class MNKBoard implements Board, Position {
         this.col = col;
         this.row = row;
         this.k = k;
+        this.maxMove = maxMove;
     }
 
+    protected void setCell(int x, int y) {
+        cells[x][y] = Cell.N;
+    }
     @Override
     public Position getPosition() {
-        return copy();
+        return new CopyPosition(this);
     }
 
-    private Position copy() {
-        MNKBoard copyBoard = new MNKBoard(row, col, k);
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                copyBoard.cells[i][j] = getCell(i, j);
-            }
-        }
-        return copyBoard;
-    }
     @Override
     public Cell getCell() {
         return turn;
@@ -52,22 +48,27 @@ public class MNKBoard implements Board, Position {
         if (!isValid(move)) {
             return Result.LOSE;
         }
-        number++;
+        maxMove--;
         cells[move.getRow()][move.getColumn()] = move.getValue();
+        boolean nextMove = false;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) {
                     continue;
                 }
-                if (getResult(move.getRow(), move.getColumn(), i, j, turn) + getResult(move.getRow(), move.getColumn(), -i, -j, turn) - 1 >= k) {
+                int res = getResult(move.getRow(), move.getColumn(), i, j, turn) + getResult(move.getRow(), move.getColumn(), -i, -j, turn) - 1;
+                if (res >= k) {
                     return Result.WIN;
                 }
+                if (res >= 4)
+                    nextMove = true;
             }
         }
-        if (number == col * row) {
+        if (maxMove == 0) {
             return Result.DRAW;
         }
-        turn = turn == Cell.X ? Cell.O : Cell.X;
+        if (!nextMove)
+            turn = turn == Cell.X ? Cell.O : Cell.X;
         return Result.UNKNOWN;
     }
 
@@ -85,14 +86,9 @@ public class MNKBoard implements Board, Position {
         return cnt;
     }
 
-    private boolean isPosition(int x, int y) {
-        return 0 <= x && x < row && 0 <= y && y < col;
-    }
-
     @Override
     public boolean isValid(final Move move) {
-        return 0 <= move.getRow() && move.getRow() < row
-                && 0 <= move.getColumn() && move.getColumn() < col
+        return isPosition(move.getRow(), move.getColumn())
                 && cells[move.getRow()][move.getColumn()] == Cell.E
                 && turn == getCell();
     }
@@ -130,5 +126,8 @@ public class MNKBoard implements Board, Position {
     public int getK() {
         return k;
     }
+
+    protected abstract boolean isPosition(int x, int y);
+
 
 }
