@@ -1,10 +1,10 @@
 package ticTacToe;
 
-public class CopyPosition implements Position {
+public class ProxyPosition implements Position {
 
     private Position position;
 
-    public CopyPosition(Position position) {
+    public ProxyPosition(Position position) {
         this.position = position;
     }
     @Override

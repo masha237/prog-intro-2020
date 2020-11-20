@@ -18,6 +18,7 @@ public abstract class MNKBoard implements Board, Position {
     private Cell turn;
     private final int row, col, k;
     private int maxMove;
+
     public MNKBoard(int row, int col, int k, int maxMove) {
         this.cells = new Cell[row][col];
         for (Cell[] rows : cells) {
@@ -33,9 +34,10 @@ public abstract class MNKBoard implements Board, Position {
     protected void setCell(int x, int y) {
         cells[x][y] = Cell.N;
     }
+
     @Override
     public Position getPosition() {
-        return new CopyPosition(this);
+        return new ProxyPosition(this);
     }
 
     @Override
@@ -48,10 +50,11 @@ public abstract class MNKBoard implements Board, Position {
         if (!isValid(move)) {
             return Result.LOSE;
         }
+
         maxMove--;
         cells[move.getRow()][move.getColumn()] = move.getValue();
         boolean nextMove = false;
-        for (int i = -1; i <= 1; i++) {
+        for (int i = 0; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) {
                     continue;
@@ -60,15 +63,17 @@ public abstract class MNKBoard implements Board, Position {
                 if (res >= k) {
                     return Result.WIN;
                 }
-                if (res >= 4)
+                if (res >= 4) {
                     nextMove = true;
+                }
             }
         }
         if (maxMove == 0) {
             return Result.DRAW;
         }
-        if (!nextMove)
+        if (!nextMove) {
             turn = turn == Cell.X ? Cell.O : Cell.X;
+        }
         return Result.UNKNOWN;
     }
 

@@ -9,8 +9,10 @@ import java.util.Scanner;
  */
 public class Main {
     static Scanner in = new Scanner(System.in);
+
     public static int scan(String s) {
         System.out.println("Enter " + s + ":");
+        // :NOTE: Исправить
         String k = in.next();
         while (true) {
             try {
