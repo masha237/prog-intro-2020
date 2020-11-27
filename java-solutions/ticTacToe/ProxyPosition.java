@@ -2,7 +2,7 @@ package ticTacToe;
 
 public class ProxyPosition implements Position {
 
-    private Position position;
+    private final Position position;
 
     public ProxyPosition(Position position) {
         this.position = position;
