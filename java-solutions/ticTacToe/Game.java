@@ -5,37 +5,30 @@ package ticTacToe;
  */
 public class Game {
     private final boolean log;
-    private final Player player1, player2;
+    private final Player[] players = new Player[2];
 
     public Game(final boolean log, final Player player1, final Player player2) {
         this.log = log;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.players[0] = player1;
+        this.players[1] = player2;
     }
 
     public int play(Board board) {
         int result;
+        int ind = 0;
+
         while (true) {
             // :NOTE: Копипаста
             result = -2;
             while (result == -2) {
-                result = move(board, player1, 1);
+                result = move(board, players[ind], ind);
                 if (result >= 0) {
                     System.out.println("Final Board:");
                     System.out.println(board);
                     return result;
                 }
             }
-
-            result = -2;
-            while (result == -2) {
-                result = move(board, player2, 2);
-                if (result >= 0) {
-                    System.out.println("Final Board:");
-                    System.out.println(board);
-                    return result;
-                }
-            }
+            ind ^= 1;
         }
     }
 
