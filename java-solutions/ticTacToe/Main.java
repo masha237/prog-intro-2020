@@ -1,6 +1,7 @@
 package ticTacToe;
 
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -9,13 +10,13 @@ import java.util.Scanner;
 public class Main {
     static Scanner in = new Scanner(System.in);
 
-    private static int rhombusGame(Game game) throws IllegalStateException {
+    private static int rhombusGame(Game game) throws IllegalStateException, NoSuchElementException {
         int n = Scan.scan("n", in);
         int k = Scan.scan("k", in);
         return game.play(new RhombusBoard(n, k));
     }
 
-    private static int rectangleGame(Game game) throws IllegalStateException {
+    private static int rectangleGame(Game game) throws IllegalStateException, NoSuchElementException {
         int m = Scan.scan("m", in);
         int n = Scan.scan("n", in);
         int k = Scan.scan("k", in);
@@ -43,7 +44,9 @@ public class Main {
                 System.out.println("Game result: " + result);
             } while (result != 0);
         } catch (IllegalStateException e) {
-            System.out.println(e.getMessage() + "You close your scanner");
+            System.out.println(e.getMessage() + " You close your scanner");
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage() + " You don't enter words");
         }
     }
 }

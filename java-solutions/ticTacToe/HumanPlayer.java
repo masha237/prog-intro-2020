@@ -1,6 +1,7 @@
 package ticTacToe;
 
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -20,12 +21,11 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public Move move(final Position position, final Cell cell) throws IllegalStateException {
+    public Move move(final Position position, final Cell cell) throws IllegalStateException, NoSuchElementException {
         while (true) {
             out.println("Position");
             out.println(position);
             out.println(cell + "'s move");
-            // :NOTE: убрать зависимость
             final Move move = new Move(Scan.scan("row", in), Scan.scan("column", in), cell);
             if (position.isValid(move)) {
                 return move;
