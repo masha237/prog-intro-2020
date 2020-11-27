@@ -21,7 +21,7 @@ public class Game {
             // :NOTE: Копипаста
             result = -2;
             while (result == -2) {
-                result = move(board, players[ind], ind);
+                result = move(board, players[ind], ind + 1);
                 if (result >= 0) {
                     System.out.println("Final Board:");
                     System.out.println(board);
