@@ -18,6 +18,8 @@ public abstract class MNKBoard implements Board, Position {
     private Cell turn;
     private final int row, col, k;
     private int maxMove;
+    public static final int[] DX = new int[]{-1, 0, 1, -1};
+    public static final int[] DY = new int[]{-1, -1, -1, 0};
 
     public MNKBoard(int row, int col, int k) {
         this.cells = new Cell[row][col];
@@ -54,10 +56,8 @@ public abstract class MNKBoard implements Board, Position {
         maxMove--;
         cells[move.getRow()][move.getColumn()] = move.getValue();
         boolean nextMove = false;
-        int[] dx = {-1, 0, 1, -1};
-        int[] dy = {-1, -1, -1, 0};
         for (int i = 0; i < 4; i++) {
-            int res = getResult(move.getRow(), move.getColumn(), dx[i], dy[i], turn) + getResult(move.getRow(), move.getColumn(), -dx[i], -dy[i], turn) - 1;
+            int res = getResult(move.getRow(), move.getColumn(), DX[i], DY[i], turn) + getResult(move.getRow(), move.getColumn(), -DX[i], -DY[i], turn) - 1;
             if (res >= k) {
                 return Result.WIN;
             }
@@ -65,9 +65,11 @@ public abstract class MNKBoard implements Board, Position {
                 nextMove = true;
             }
         }
+
         if (maxMove == 0) {
             return Result.DRAW;
         }
+
         if (!nextMove) {
             turn = turn == Cell.X ? Cell.O : Cell.X;
             return Result.UNKNOWNNOTSWAP;

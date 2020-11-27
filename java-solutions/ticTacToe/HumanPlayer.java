@@ -25,6 +25,7 @@ public class HumanPlayer implements Player {
             out.println("Position");
             out.println(position);
             out.println(cell + "'s move");
+            // :NOTE: убрать зависимость
             final Move move = new Move(Main.scan("row", in), Main.scan("column", in), cell);
             if (position.isValid(move)) {
                 return move;

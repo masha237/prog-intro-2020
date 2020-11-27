@@ -1,7 +1,6 @@
 package ticTacToe;
 
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -18,8 +17,10 @@ public class Main {
                     System.out.println(in.next() + "is not number, try again");
                 }
                 return in.nextInt();
+                // :NOTE: Exception
             } catch (Exception e) {
                 System.out.println(e.getMessage() + " no more tokens are available");
+                // :NOTE: System.exit(0);
                 System.exit(0);
             }
         }
@@ -37,6 +38,7 @@ public class Main {
         int k = scan("k", in);
         return game.play(new RectangleBoard(n, m, k));
     }
+
     public static void main(String[] args) {
         final Game game = new Game(false, new HumanPlayer(), new HumanPlayer());
         int result;

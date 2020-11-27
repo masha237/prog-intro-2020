@@ -3,6 +3,7 @@ package ticTacToe;
 public class RhombusBoard extends MNKBoard {
     public RhombusBoard(int a, int k) {
         super(2 * a - 1, 2 * a - 1, k);
+
         int c = 2 * a - 1;
         for (int i = 0; i < c; i++) {
             for (int j = 0; j < c; j++) {
@@ -12,6 +13,7 @@ public class RhombusBoard extends MNKBoard {
             }
         }
     }
+
     private int dist(int i, int c) {
         return Math.abs(i - c);
     }
