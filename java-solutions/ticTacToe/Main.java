@@ -23,7 +23,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        final Game game = new Game(false, new HumanPlayer(), new HumanPlayer());
+        final Game game = new Game(false, new HumanPlayer(), new HumanPlayer(), 2);
         int result;
         try {
             do {

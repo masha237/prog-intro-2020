@@ -5,10 +5,13 @@ package ticTacToe;
  */
 public class Game {
     private final boolean log;
-    private final Player[] players = new Player[2];
+    private final Player[] players;
+    private final int numberPlayer;
 
-    public Game(final boolean log, final Player player1, final Player player2) {
+    public Game(final boolean log, final Player player1, final Player player2, final int numberPlayer) {
         this.log = log;
+        this.numberPlayer = numberPlayer;
+        players = new Player[numberPlayer];
         this.players[0] = player1;
         this.players[1] = player2;
     }
@@ -28,7 +31,7 @@ public class Game {
                     return result;
                 }
             }
-            ind ^= 1;
+            ind = (ind + 1) % numberPlayer;
         }
     }
 
