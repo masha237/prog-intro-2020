@@ -16,6 +16,7 @@ public class Game {
     public int play(Board board) {
         int result;
         while (true) {
+            // :NOTE: Копипаста
             result = -2;
             while (result == -2) {
                 result = move(board, player1, 1);
@@ -25,6 +26,7 @@ public class Game {
                     return result;
                 }
             }
+
             result = -2;
             while (result == -2) {
                 result = move(board, player2, 2);
@@ -51,7 +53,7 @@ public class Game {
         } else if (result == Result.DRAW) {
             log("Draw");
             return 0;
-        } else if (result == Result.UNKNOWNSWAP){
+        } else if (result == Result.UNKNOWN_SWAP) {
             return -1;
         } else {
             return -2;

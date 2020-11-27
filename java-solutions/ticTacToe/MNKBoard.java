@@ -72,9 +72,9 @@ public abstract class MNKBoard implements Board, Position {
 
         if (!nextMove) {
             turn = turn == Cell.X ? Cell.O : Cell.X;
-            return Result.UNKNOWNNOTSWAP;
+            return Result.UNKNOWN_NOT_SWAP;
         }
-        return Result.UNKNOWNSWAP;
+        return Result.UNKNOWN_SWAP;
     }
 
     private int getResult(int x, int y, int dx, int dy, Cell cell) {
