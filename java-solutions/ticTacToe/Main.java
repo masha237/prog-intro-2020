@@ -12,17 +12,17 @@ public class Main {
 
     public static int scan(String s, Scanner in) {
         System.out.println("Enter " + s + ":");
-        int k = 0;
-        try {
-            while (!in.hasNext()) {
-                System.out.println(in.next() + "is not number, try again");
+        while (true) {
+            try {
+                while (!in.hasNextInt()) {
+                    System.out.println(in.next() + "is not number, try again");
+                }
+                return in.nextInt();
+            } catch (Exception e) {
+                System.out.println(e.getMessage() + " no more tokens are available");
+                System.exit(0);
             }
-            k = in.nextInt();
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage() + "no more tokens are available");
-            System.exit(0);
         }
-        return k;
     }
 
     private static int rhombusGame(Game game) {
@@ -51,7 +51,7 @@ public class Main {
                     result = rhombusGame(game);
                     break;
                 } else {
-                    System.out.println(s + "isn't board's name. Try again.");
+                    System.out.println(s + " isn't board's name. Try again.");
                 }
             }
             System.out.println("Game result: " + result);

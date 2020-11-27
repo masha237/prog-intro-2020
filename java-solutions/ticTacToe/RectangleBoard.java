@@ -5,9 +5,4 @@ public class RectangleBoard extends MNKBoard {
         super(row, col, k);
     }
 
-    protected boolean isPosition(int x, int y) {
-        return 0 <= x && x < this.getRow() && 0 <= y && y < this.getCol();
-    }
-
-
 }

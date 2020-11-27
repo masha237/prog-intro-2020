@@ -32,6 +32,7 @@ public abstract class MNKBoard implements Board, Position {
     }
 
     protected void setCell(int x, int y) {
+        maxMove--;
         cells[x][y] = Cell.N;
     }
 
@@ -103,10 +104,10 @@ public abstract class MNKBoard implements Board, Position {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        int width = Math.max(Math.max((int)Math.ceil(Math.log10(row)), (int)Math.ceil(Math.log10(col))), 1);
+        int width = Math.max(Math.max((int) Math.ceil(Math.log10(row)), (int) Math.ceil(Math.log10(col))), 1);
         sb.append(String.format("%" + width + "s", ""));
         for (int i = 0; i < col; i++)
-            sb.append(String.format("%" + width + "d",i));
+            sb.append(String.format("%" + width + "d", i));
         for (int r = 0; r < row; r++) {
             sb.append("\n");
             sb.append(String.format("%" + width + "d", r));
@@ -129,7 +130,9 @@ public abstract class MNKBoard implements Board, Position {
         return k;
     }
 
-    protected abstract boolean isPosition(int x, int y);
+    protected boolean isPosition(int x, int y) {
+        return 0 <= x && x < this.getRow() && 0 <= y && y < this.getCol();
+    }
 
 
 }

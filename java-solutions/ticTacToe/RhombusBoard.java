@@ -12,8 +12,4 @@ public class RhombusBoard extends MNKBoard {
             }
         }
     }
-
-    protected boolean isPosition(int x, int y) {
-        return 0 <= x && x < this.getRow() && 0 <= y && y < this.getCol();
-    }
 }
