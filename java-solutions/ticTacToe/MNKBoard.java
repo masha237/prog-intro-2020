@@ -19,7 +19,7 @@ public abstract class MNKBoard implements Board, Position {
     private final int row, col, k;
     private int maxMove;
 
-    public MNKBoard(int row, int col, int k, int maxMove) {
+    public MNKBoard(int row, int col, int k) {
         this.cells = new Cell[row][col];
         for (Cell[] rows : cells) {
             Arrays.fill(rows, Cell.E);
@@ -28,7 +28,7 @@ public abstract class MNKBoard implements Board, Position {
         this.col = col;
         this.row = row;
         this.k = k;
-        this.maxMove = maxMove;
+        this.maxMove = row * col;
     }
 
     protected void setCell(int x, int y) {
@@ -50,22 +50,18 @@ public abstract class MNKBoard implements Board, Position {
         if (!isValid(move)) {
             return Result.LOSE;
         }
-
         maxMove--;
         cells[move.getRow()][move.getColumn()] = move.getValue();
         boolean nextMove = false;
-        for (int i = 0; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i == 0 && j == 0) {
-                    continue;
-                }
-                int res = getResult(move.getRow(), move.getColumn(), i, j, turn) + getResult(move.getRow(), move.getColumn(), -i, -j, turn) - 1;
-                if (res >= k) {
-                    return Result.WIN;
-                }
-                if (res >= 4) {
-                    nextMove = true;
-                }
+        int[] dx = {-1, 0, 1, -1};
+        int[] dy = {-1, -1, -1, 0};
+        for (int i = 0; i < 4; i++) {
+            int res = getResult(move.getRow(), move.getColumn(), dx[i], dy[i], turn) + getResult(move.getRow(), move.getColumn(), -dx[i], -dy[i], turn) - 1;
+            if (res >= k) {
+                return Result.WIN;
+            }
+            if (res >= 4) {
+                nextMove = true;
             }
         }
         if (maxMove == 0) {
@@ -73,8 +69,9 @@ public abstract class MNKBoard implements Board, Position {
         }
         if (!nextMove) {
             turn = turn == Cell.X ? Cell.O : Cell.X;
+            return Result.UNKNOWNNOTSWAP;
         }
-        return Result.UNKNOWN;
+        return Result.UNKNOWNSWAP;
     }
 
     private int getResult(int x, int y, int dx, int dy, Cell cell) {
@@ -106,7 +103,7 @@ public abstract class MNKBoard implements Board, Position {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        int width = Math.max((int)Math.ceil(Math.log10(row)), (int)Math.ceil(Math.log10(col)));
+        int width = Math.max(Math.max((int)Math.ceil(Math.log10(row)), (int)Math.ceil(Math.log10(col))), 1);
         sb.append(String.format("%" + width + "s", ""));
         for (int i = 0; i < col; i++)
             sb.append(String.format("%" + width + "d",i));

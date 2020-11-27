@@ -14,18 +14,25 @@ public class Game {
     }
 
     public int play(Board board) {
+        int result;
         while (true) {
-            final int result1 = move(board, player1, 1);
-            if (result1 != -1) {
-                System.out.println("Final Board:");
-                System.out.println(board);
-                return result1;
+            result = -2;
+            while (result == -2) {
+                result = move(board, player1, 1);
+                if (result >= 0) {
+                    System.out.println("Final Board:");
+                    System.out.println(board);
+                    return result;
+                }
             }
-            final int result2 = move(board, player2, 2);
-            if (result2 != -1) {
-                System.out.println("Final Board:");
-                System.out.println(board);
-                return result2;
+            result = -2;
+            while (result == -2) {
+                result = move(board, player2, 2);
+                if (result >= 0) {
+                    System.out.println("Final Board:");
+                    System.out.println(board);
+                    return result;
+                }
             }
         }
     }
@@ -44,8 +51,10 @@ public class Game {
         } else if (result == Result.DRAW) {
             log("Draw");
             return 0;
-        } else {
+        } else if (result == Result.UNKNOWNSWAP){
             return -1;
+        } else {
+            return -2;
         }
     }
 

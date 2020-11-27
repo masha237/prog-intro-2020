@@ -26,4 +26,9 @@ public class ProxyPosition implements Position {
     public int getCol() {
         return position.getCol();
     }
+
+    @Override
+    public String toString() {
+        return position.toString();
+    }
 }
