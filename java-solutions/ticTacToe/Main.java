@@ -44,7 +44,7 @@ public class Main {
                 System.out.println("Game result: " + result);
             } while (result != 0);
         } catch (IllegalStateException e) {
-            System.out.println(e.getMessage() + " You close your scanner");
+            System.out.println(e.getMessage() + " Your scanner was closed");
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage() + " You don't enter words");
         }
