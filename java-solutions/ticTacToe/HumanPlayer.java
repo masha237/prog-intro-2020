@@ -20,13 +20,13 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public Move move(final Position position, final Cell cell) {
+    public Move move(final Position position, final Cell cell) throws IllegalStateException {
         while (true) {
             out.println("Position");
             out.println(position);
             out.println(cell + "'s move");
             // :NOTE: убрать зависимость
-            final Move move = new Move(Main.scan("row", in), Main.scan("column", in), cell);
+            final Move move = new Move(Scan.scan("row", in), Scan.scan("column", in), cell);
             if (position.isValid(move)) {
                 return move;
             }

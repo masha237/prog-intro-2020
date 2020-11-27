@@ -1,0 +1,17 @@
+package ticTacToe;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class Scan {
+    public static int scan(String s, Scanner in) throws IllegalStateException {
+        System.out.println("Enter " + s + ":");
+        while (true) {
+            while (in.hasNext() && !in.hasNextInt()) {
+                System.out.println(in.next() + "is not number, try again");
+            }
+            return in.nextInt();
+        }
+    }
+}
+
