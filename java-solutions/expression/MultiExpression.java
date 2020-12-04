@@ -1,7 +1,5 @@
 package expression;
 
-import java.util.Objects;
-
 public abstract class MultiExpression implements Expression, DoubleExpression, TripleExpression {
     public abstract int evaluate(int x, int y, int z);
 

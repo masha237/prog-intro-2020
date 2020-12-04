@@ -16,6 +16,7 @@ public abstract class BinaryOperator extends MultiExpression {
     }
 
     protected abstract int evaluate(int x, int y);
+
     protected abstract double evaluate(double x, double y);
 
     public int evaluate(int x, int y, int z) {
