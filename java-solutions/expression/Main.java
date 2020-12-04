@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         int x = scan.nextInt();
-        String res = new Add(new Multiply(new Variable("x"), new Variable("x")), new Add(new Multiply(new Const(2), new Variable("x")), new Const(1))).toMiniString();
+        int res = new Add(new Multiply(new Variable("x"), new Variable("x")), new Add(new Multiply(new Const(2), new Variable("x")), new Const(1))).evaluate(x);
         System.out.println(res);
     }
 }
