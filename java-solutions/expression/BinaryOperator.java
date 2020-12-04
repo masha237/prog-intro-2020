@@ -6,7 +6,7 @@ public abstract class BinaryOperator extends MultiExpression {
     protected final MultiExpression left;
     protected final MultiExpression right;
 
-    BinaryOperator(MultiExpression left, MultiExpression right) {
+    protected BinaryOperator(MultiExpression left, MultiExpression right) {
         this.left = left;
         this.right = right;
     }
