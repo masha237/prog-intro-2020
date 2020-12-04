@@ -93,13 +93,16 @@ public abstract class MNKBoard implements Board, Position {
 
     @Override
     public boolean isValid(final Move move) {
-        return isPosition(move.getRow(), move.getColumn())
+        return move != null && isPosition(move.getRow(), move.getColumn())
                 && cells[move.getRow()][move.getColumn()] == Cell.E
                 && turn == getCell();
     }
 
     @Override
-    public Cell getCell(final int r, final int c) {
+    public Cell getCell(final int r, final int c) throws IndexOutOfBoundsException {
+        if (!isPosition(r, c)) {
+            throw new IndexOutOfBoundsException("Index (" + r + ";" + c + ") is invalid");
+        }
         return cells[r][c];
     }
 

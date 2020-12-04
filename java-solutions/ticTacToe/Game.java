@@ -24,7 +24,15 @@ public class Game {
             // :NOTE: Копипаста
             result = -2;
             while (result == -2) {
-                result = move(board, players[ind], ind + 1);
+                if (players[ind] == null && players[ind ^ 1] != null) {
+                    result = 3 - ind - 1;
+                    System.out.println("player " + ind + 1 + " is null");
+                } else if (players[ind] == null && players[ind ^ 1] == null) {
+                    result = 0;
+                    System.out.println("both players are null");
+                } else {
+                    result = move(board, players[ind], ind + 1);
+                }
                 if (result >= 0) {
                     System.out.println("Final Board:");
                     System.out.println(board);

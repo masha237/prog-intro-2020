@@ -47,6 +47,8 @@ public class Main {
             System.out.println(e.getMessage() + " Your scanner was closed");
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage() + " You don't enter words");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

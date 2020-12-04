@@ -11,7 +11,12 @@ public class Scan {
             while (in.hasNext() && !in.hasNextInt()) {
                 System.out.println(in.next() + "is not number, try again");
             }
-            return in.nextInt();
+            int x = in.nextInt();
+            if (x >= 0) {
+                return x;
+            } else {
+                System.out.println(x + " negative number, try again");
+            }
         }
     }
 }
