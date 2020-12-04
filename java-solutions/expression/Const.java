@@ -13,7 +13,6 @@ public class Const extends MultiExpression {
         this.value = value;
     }
 
-
     public int evaluate(int x, int y, int z) {
         return value.intValue();
     }
