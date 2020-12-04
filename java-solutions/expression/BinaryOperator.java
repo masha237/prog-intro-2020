@@ -5,14 +5,10 @@ import java.util.Objects;
 public abstract class BinaryOperator extends MultiExpression {
     protected final MultiExpression left;
     protected final MultiExpression right;
-    protected final int priorityL, priorityR, realPr;
 
-    BinaryOperator(MultiExpression left, MultiExpression right, int priorityL, int priorityR, int realPr) {
+    BinaryOperator(MultiExpression left, MultiExpression right) {
         this.left = left;
         this.right = right;
-        this.priorityL = priorityL;
-        this.priorityR = priorityR;
-        this.realPr = realPr;
     }
 
     protected abstract int evaluate(int x, int y);
@@ -41,22 +37,28 @@ public abstract class BinaryOperator extends MultiExpression {
 
     public String toMiniString(int priority) {
         StringBuilder sb = new StringBuilder();
-        if (priority > realPr) {
-            sb.append('(').append(left.toMiniString(priorityL));
+        if (priority > getRealPr()) {
+            sb.append('(').append(left.toMiniString(getPriorityL()));
         } else {
-            sb.append(left.toMiniString(priorityL));
+            sb.append(left.toMiniString(getPriorityL()));
         }
         sb.append(" ").append(getOperator()).append(" ");
-        if (priority > priorityR) {
-            sb.append(right.toMiniString(priorityR));
+        if (priority > getPriorityR()) {
+            sb.append(right.toMiniString(getPriorityR()));
         } else {
-            sb.append(right.toMiniString(priorityR));
+            sb.append(right.toMiniString(getPriorityR()));
         }
-        if (priority > realPr) {
+        if (priority > getRealPr()) {
             sb.append(')');
         }
         return sb.toString();
     }
+
+    protected abstract int getRealPr();
+
+    protected abstract int getPriorityR();
+
+    protected abstract int getPriorityL();
 
 
     @Override
