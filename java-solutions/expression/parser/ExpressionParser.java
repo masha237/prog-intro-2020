@@ -5,7 +5,7 @@ import expression.*;
 import java.util.*;
 
 public class ExpressionParser implements Parser {
-    private int[] oper = new int[Character.MAX_VALUE];
+    private final int[] prior = new int[Character.MAX_VALUE];
     private final Set<String> unaryOper = Set.of(
             "-",
             "~",
@@ -15,20 +15,20 @@ public class ExpressionParser implements Parser {
     );
 
     boolean isOperation(char ch) {
-        return oper[ch] != Integer.MIN_VALUE;
+        return prior[ch] != Integer.MIN_VALUE;
     }
 
     @Override
     public TripleExpression parse(String expression) throws UnsupportedOperationException {
-        Arrays.fill(oper, Integer.MIN_VALUE);
-        oper['^'] = -1;
-        oper['|'] = -2;
-        oper['&'] = 0;
-        oper['-'] = 1;
-        oper['+'] = 1;
-        oper['*'] = 2;
-        oper['/'] = 2;
-        oper['m'] = oper['n'] = oper['c'] = oper['f'] = oper['l'] = Integer.MAX_VALUE;
+        Arrays.fill(prior, Integer.MIN_VALUE);
+        prior['^'] = -1;
+        prior['|'] = -2;
+        prior['&'] = 0;
+        prior['-'] = 1;
+        prior['+'] = 1;
+        prior['*'] = 2;
+        prior['/'] = 2;
+        prior['m'] = prior['n'] = prior['c'] = prior['f'] = prior['l'] = Integer.MAX_VALUE;
 
         Stack<Character> oper = new Stack<>();
         Stack<MultiExpression> num = new Stack<>();
@@ -45,8 +45,8 @@ public class ExpressionParser implements Parser {
                 fl = true;
                 oper.push('(');
             } else if (!fl && isOperation(expression.charAt(ind)) && !num.empty()) {
-                int prior = this.oper[expression.charAt(ind)];
-                while (!oper.empty() && isOperation(oper.peek()) && prior <= this.oper[oper.peek()]) {
+                int prior = this.prior[expression.charAt(ind)];
+                while (!oper.empty() && isOperation(oper.peek()) && prior <= this.prior[oper.peek()]) {
                     union(oper, num);
                 }
                 fl = true;
@@ -60,13 +60,13 @@ public class ExpressionParser implements Parser {
                 }
                 ind--;
                 num.push(new Const(cur));
-                while (!oper.empty() && this.oper[oper.peek()] == Integer.MAX_VALUE) {
+                while (!oper.empty() && this.prior[oper.peek()] == Integer.MAX_VALUE) {
                     union(oper, num);
                 }
             } else if (expression.charAt(ind) == 'z' || expression.charAt(ind) == 'y' || expression.charAt(ind) == 'x') {
                 fl = false;
                 num.push(new Variable(String.valueOf(expression.charAt(ind))));
-                while (!oper.empty() && this.oper[oper.peek()] == Integer.MAX_VALUE) {
+                while (!oper.empty() && this.prior[oper.peek()] == Integer.MAX_VALUE) {
                     union(oper, num);
                 }
             } else if (Character.isAlphabetic(expression.charAt(ind)) || unaryOper.contains("" + expression.charAt(ind))) {
