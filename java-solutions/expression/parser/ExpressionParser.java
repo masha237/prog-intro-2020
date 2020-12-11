@@ -1,7 +1,5 @@
 package expression.parser;
-
 import expression.*;
-
 import java.util.*;
 
 public class ExpressionParser implements Parser {
@@ -85,20 +83,17 @@ public class ExpressionParser implements Parser {
                     case "count" -> oper.push('c');
                     case "flip" -> oper.push('f');
                     case "low" -> oper.push('l');
-                    default -> throw new UnsupportedOperationException(sb.toString() + " is invalid operatin");
                 }
             }
             ind++;
         }
-        while (oper.size() != 0) {
+        while (oper.size() != 0 && num.size() != 0) {
             union(oper, num);
         }
         return num.peek();
     }
 
     void union(Stack<Character> op, Stack<MultiExpression> num) {
-        if (num.size() == 0)
-            return;
         MultiExpression a = num.peek();
         num.pop();
         char ch = op.peek();
@@ -113,7 +108,7 @@ public class ExpressionParser implements Parser {
             num.push(new Low(a));
         } else if (ch == 'c') {
             num.push(new Count(a));
-        } else {
+        } else if (num.size() > 0) {
             MultiExpression b = num.peek();
             num.pop();
             if (ch == '+') {
@@ -130,7 +125,11 @@ public class ExpressionParser implements Parser {
                 num.push(new Xor(b, a));
             } else if (ch == '|') {
                 num.push(new Or(b, a));
+            } else {
+                throw new UnsupportedOperationException("has single bracket");
             }
+        } else {
+            throw new UnsupportedOperationException("has single bracket");
         }
     }
 }
