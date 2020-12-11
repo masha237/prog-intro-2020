@@ -3,6 +3,8 @@ import expression.*;
 import java.util.*;
 
 public class ExpressionParser implements Parser {
+    // :NOTE: Map?
+    // :NOTE: Константы
     private final int[] prior = new int[Character.MAX_VALUE];
     private final Set<String> unaryOper = Set.of(
             "-",
@@ -26,6 +28,7 @@ public class ExpressionParser implements Parser {
         prior['*'] = prior['/'] = 2;
         prior['m'] = prior['n'] = prior['c'] = prior['f'] = prior['l'] = Integer.MAX_VALUE;
 
+        // :NOTE: Stack -> ArrayDeque
         Stack<Character> oper = new Stack<>();
         Stack<MultiExpression> num = new Stack<>();
         int ind = 0;
@@ -51,6 +54,7 @@ public class ExpressionParser implements Parser {
                 fl = false;
                 int cur = 0;
                 while (ind != expression.length() && Character.isDigit(expression.charAt(ind))) {
+                    // :NOTE: парсинг "руками"
                     cur = 10 * cur + expression.charAt(ind) - '0';
                     ind++;
                 }
@@ -59,6 +63,7 @@ public class ExpressionParser implements Parser {
                 while (!oper.empty() && this.prior[oper.peek()] == Integer.MAX_VALUE) {
                     union(oper, num);
                 }
+                // :NOTE: Обращение по индексам
             } else if (expression.charAt(ind) == 'z' || expression.charAt(ind) == 'y' || expression.charAt(ind) == 'x') {
                 fl = false;
                 num.push(new Variable(String.valueOf(expression.charAt(ind))));

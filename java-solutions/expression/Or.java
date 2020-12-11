@@ -13,6 +13,7 @@ public class Or extends BinaryOperator {
         throw new UnsupportedOperationException("Or hasn't double operation");
     }
 
+    // :NOTE: Упростить
     @Override
     protected int getRealPr() {
         return -3;
