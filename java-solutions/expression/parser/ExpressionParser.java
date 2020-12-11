@@ -87,6 +87,7 @@ public class ExpressionParser implements Parser {
                     case "count" -> oper.push('c');
                     case "flip" -> oper.push('f');
                     case "low" -> oper.push('l');
+                    default -> throw new UnsupportedOperationException(sb.toString() + " is invalid operatin");
                 }
             }
             ind++;
