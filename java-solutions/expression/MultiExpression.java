@@ -12,4 +12,5 @@ public abstract class MultiExpression implements Expression, DoubleExpression, T
     public abstract String toMiniString();
 
     public abstract String toMiniString(int priority);
+
 }
