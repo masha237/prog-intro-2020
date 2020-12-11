@@ -24,10 +24,8 @@ public class ExpressionParser implements Parser {
         prior['^'] = -1;
         prior['|'] = -2;
         prior['&'] = 0;
-        prior['-'] = 1;
-        prior['+'] = 1;
-        prior['*'] = 2;
-        prior['/'] = 2;
+        prior['-'] = prior['+'] = 1;
+        prior['*'] = prior['/'] = 2;
         prior['m'] = prior['n'] = prior['c'] = prior['f'] = prior['l'] = Integer.MAX_VALUE;
 
         Stack<Character> oper = new Stack<>();
@@ -69,10 +67,10 @@ public class ExpressionParser implements Parser {
                 while (!oper.empty() && this.prior[oper.peek()] == Integer.MAX_VALUE) {
                     union(oper, num);
                 }
-            } else if (Character.isAlphabetic(expression.charAt(ind)) || unaryOper.contains("" + expression.charAt(ind))) {
+            } else if (!Character.isWhitespace(expression.charAt(ind))) {
                 fl = true;
                 StringBuilder sb = new StringBuilder();
-                while (ind != expression.length() && (Character.isAlphabetic(expression.charAt(ind)) || unaryOper.contains("" + expression.charAt(ind)))) {
+                while (ind != expression.length()) {
                     sb.append(expression.charAt(ind));
                     ind++;
                     if (unaryOper.contains(sb.toString()))
