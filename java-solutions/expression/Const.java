@@ -26,11 +26,11 @@ public class Const extends MultiExpression {
     }
 
     public String toMiniString() {
-        return toMiniString(-1);
+        return toMiniString(this, false);
     }
 
-    public String toMiniString(int x) {
-        return String.valueOf(value);
+    public String toMiniString(Const a, boolean fl) {
+        return String.valueOf(a.value);
     }
 
     @Override

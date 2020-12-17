@@ -1,6 +1,6 @@
 package expression;
 
-public class Xor extends BinaryOperator {
+public class Xor extends BitBinaryOper {
     public Xor(MultiExpression left, MultiExpression right) {
         super(left, right);
     }
@@ -9,27 +9,19 @@ public class Xor extends BinaryOperator {
         return x ^ y;
     }
 
-    protected double evaluate(double x, double y) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Xor hasn't double operation");
-    }
-
     @Override
-    protected int getRealPr() {
+    protected int getPriority() {
         return -2;
     }
 
     @Override
-    protected int getPriorityR() {
-        return -2;
-    }
-
-    @Override
-    protected int getPriorityL() {
-        return -2;
+    protected boolean getAssociativity() {
+        return true;
     }
 
     @Override
     protected char getOperator() {
         return '^';
     }
+
 }

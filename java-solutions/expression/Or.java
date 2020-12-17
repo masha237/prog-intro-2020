@@ -1,6 +1,6 @@
 package expression;
 
-public class Or extends BinaryOperator {
+public class Or extends BitBinaryOper {
     public Or(MultiExpression left, MultiExpression right) {
         super(left, right);
     }
@@ -9,24 +9,15 @@ public class Or extends BinaryOperator {
         return x | y;
     }
 
-    protected double evaluate(double x, double y) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Or hasn't double operation");
-    }
-
     // :NOTE: Упростить
     @Override
-    protected int getRealPr() {
+    protected int getPriority() {
         return -3;
     }
 
     @Override
-    protected int getPriorityR() {
-        return -3;
-    }
-
-    @Override
-    protected int getPriorityL() {
-        return -3;
+    protected boolean getAssociativity() {
+        return true;
     }
 
     @Override

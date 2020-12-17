@@ -14,18 +14,13 @@ public class Multiply extends BinaryOperator {
     }
 
     @Override
-    protected int getRealPr() {
-        return 3;
+    protected int getPriority() {
+        return 1;
     }
 
     @Override
-    protected int getPriorityR() {
-        return 3;
-    }
-
-    @Override
-    protected int getPriorityL() {
-        return 2;
+    protected boolean getAssociativity() {
+        return true;
     }
 
     @Override

@@ -31,35 +31,37 @@ public abstract class BinaryOperator extends MultiExpression {
         return "(" + left + " " + getOperator() + " " + right + ")";
     }
 
-    public String toMiniString() {
-        return toMiniString(-1);
+    private boolean checkPriority(Expression a) {
+        return ((a instanceof BinaryOperator) && ((BinaryOperator) a).getPriority() < this.getPriority());
     }
 
-    public String toMiniString(int priority) {
+    private boolean associativeForRight(Expression a) {
+        if (a instanceof BinaryOperator) {
+            return (!((BinaryOperator) a).getAssociativity() || !this.getAssociativity()) && ((BinaryOperator) a).getPriority() <= this.getPriority();
+        }
+        return false;
+    }
+
+    @Override
+    public String toMiniString() {
         StringBuilder sb = new StringBuilder();
-        if (priority > getRealPr()) {
-            sb.append('(').append(left.toMiniString(getPriorityL()));
+        if (checkPriority(left)) {
+            sb.append("(").append(left.toMiniString()).append(")");
         } else {
-            sb.append(left.toMiniString(getPriorityL()));
+            sb.append(left.toMiniString());
         }
         sb.append(" ").append(getOperator()).append(" ");
-        if (priority > getPriorityR()) {
-            sb.append(right.toMiniString(getPriorityR()));
+        if (checkPriority(right) || associativeForRight(right)) {
+            sb.append("(").append(right.toMiniString()).append(")");
         } else {
-            sb.append(right.toMiniString(getPriorityR()));
-        }
-        if (priority > getRealPr()) {
-            sb.append(')');
+            sb.append(right.toMiniString());
         }
         return sb.toString();
     }
 
-    protected abstract int getRealPr();
+    protected abstract int getPriority();
 
-    protected abstract int getPriorityR();
-
-    protected abstract int getPriorityL();
-
+    protected abstract boolean getAssociativity();
 
     @Override
     public boolean equals(Object o) {

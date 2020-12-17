@@ -1,6 +1,6 @@
 package expression;
 
-public class Count extends UnaryOperator {
+public class Count extends BitUnaryOper {
     public Count(MultiExpression expr) {
         super(expr);
     }
@@ -13,10 +13,6 @@ public class Count extends UnaryOperator {
     @Override
     protected String getOperator() {
         return "count";
-    }
-
-    protected double evaluate(double x, double y) {
-        throw new UnsupportedOperationException("Count hasn't double operation");
     }
 
     public double evaluate(double x) {

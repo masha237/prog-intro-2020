@@ -14,18 +14,13 @@ public class Subtract extends BinaryOperator {
     }
 
     @Override
-    protected int getRealPr() {
+    protected int getPriority() {
         return 0;
     }
 
     @Override
-    protected int getPriorityR() {
-        return 1;
-    }
-
-    @Override
-    protected int getPriorityL() {
-        return 0;
+    protected boolean getAssociativity() {
+        return false;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package expression;
 
-public class Low extends UnaryOperator {
+public class Low extends BitUnaryOper {
     public Low(MultiExpression expr) {
         super(expr);
     }
@@ -12,11 +12,7 @@ public class Low extends UnaryOperator {
 
     @Override
     protected String getOperator() {
-        return "count";
-    }
-
-    protected double evaluate(double x, double y) {
-        throw new UnsupportedOperationException("Count hasn't double operation");
+        return "low";
     }
 
     public double evaluate(double x) {

@@ -1,6 +1,6 @@
 package expression;
 
-public class Flip extends UnaryOperator {
+public class Flip extends BitUnaryOper {
     public Flip(MultiExpression expr) {
         super(expr);
     }
@@ -18,10 +18,6 @@ public class Flip extends UnaryOperator {
     @Override
     protected String getOperator() {
         return "flip";
-    }
-
-    protected double evaluate(double x, double y) {
-        throw new UnsupportedOperationException("Count hasn't double operation");
     }
 
     public double evaluate(double x) {

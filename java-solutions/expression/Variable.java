@@ -21,15 +21,16 @@ public class Variable extends MultiExpression {
         return x;
     }
 
+    @Override
+    public String toMiniString() {
+        return toMiniString(this, false);
+    }
+
     public String toString() {
         return name;
     }
 
-    public String toMiniString() {
-        return toMiniString(-1);
-    }
-
-    public String toMiniString(int x) {
+    public String toMiniString(Expression a, boolean fl) {
         return name;
     }
 

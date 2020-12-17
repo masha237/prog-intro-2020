@@ -1,6 +1,6 @@
 package expression;
 
-public class Not extends UnaryOperator {
+public class Not extends BitUnaryOper {
     public Not(MultiExpression expr) {
         super(expr);
     }
@@ -13,10 +13,6 @@ public class Not extends UnaryOperator {
     @Override
     protected String getOperator() {
         return "~";
-    }
-
-    protected double evaluate(double x, double y) {
-        throw new UnsupportedOperationException("Not hasn't double operation");
     }
 
     public double evaluate(double x) {

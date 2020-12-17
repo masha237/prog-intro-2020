@@ -4,11 +4,9 @@ import java.util.Objects;
 
 public abstract class UnaryOperator extends MultiExpression {
     protected final MultiExpression expr;
-    protected final int priority;
 
     protected UnaryOperator(MultiExpression expr) {
         this.expr = expr;
-        this.priority = Integer.MAX_VALUE;
     }
 
     public int evaluate(int x, int y, int z) {
@@ -20,21 +18,6 @@ public abstract class UnaryOperator extends MultiExpression {
     public String toString() {
         return getOperator() + expr;
     }
-
-    public String toMiniString() {
-        return toMiniString(-1);
-    }
-
-    public String toMiniString(int priority) {
-        StringBuilder sb = new StringBuilder();
-        if (priority > this.priority) {
-            sb.append('(').append(expr.toMiniString(this.priority)).append(" ").append(getOperator()).append(')');
-        } else {
-            sb.append(expr.toMiniString(this.priority));
-        }
-        return sb.toString();
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -49,9 +32,10 @@ public abstract class UnaryOperator extends MultiExpression {
         return Objects.hash(expr, getOperator());
     }
 
-    abstract protected String getOperator();
-
-    protected int getRealPr() {
-        return priority;
+    @Override
+    public String toMiniString() {
+        return getOperator() + expr.toMiniString();
     }
+
+    abstract protected String getOperator();
 }

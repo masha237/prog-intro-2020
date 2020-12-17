@@ -1,6 +1,6 @@
 package expression;
 
-public class And extends BinaryOperator {
+public class And extends BitBinaryOper {
     public And(MultiExpression left, MultiExpression right) {
         super(left, right);
     }
@@ -9,23 +9,14 @@ public class And extends BinaryOperator {
         return x & y;
     }
 
-    protected double evaluate(double x, double y) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("And hasn't double operation");
-    }
-
     @Override
-    protected int getRealPr() {
+    protected int getPriority() {
         return -1;
     }
 
     @Override
-    protected int getPriorityR() {
-        return -1;
-    }
-
-    @Override
-    protected int getPriorityL() {
-        return -1;
+    protected boolean getAssociativity() {
+        return true;
     }
 
     @Override
