@@ -16,8 +16,7 @@ public class MakerTokens {
 
     public ArrayList<String> getAllToken() {
         ArrayList<String> res = new ArrayList<>();
-        skip();
-        while (in.hasNext()) {
+        while (hasNext()) {
             res.add(nextToken());
         }
         return res;
@@ -25,24 +24,25 @@ public class MakerTokens {
 
     public String nextToken() {
         StringBuilder sb = new StringBuilder();
-        skip();
-        while (in.hasNext()) {
+        while (hasNext()) {
             sb.append(in.next());
             if (isToken.contains(sb.toString())) {
-                skip();
                 return sb.toString();
             } else if (Character.isDigit(sb.charAt(0))) {
                 while (Character.isDigit(in.getNext())) {
                     sb.append(in.next());
                 }
-                skip();
                 return sb.toString();
             }
         }
-        throw new UnsupportedOperationException(sb.toString() + " is invalid token");
+        return "";
     }
 
-    void skip() {
+    public boolean hasNext() {
+        skip();
+        return in.hasNext();
+    }
+    private void skip() {
         while (!this.isTokenCharacter.test(in.getNext())) {
             in.next();
         }

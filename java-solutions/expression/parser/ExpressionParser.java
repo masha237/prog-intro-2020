@@ -3,29 +3,17 @@ import expression.*;
 import java.util.*;
 
 public class ExpressionParser implements Parser {
-    private static final Set<String> TOKEN = Set.of("(", ")", "+", "-", "*", "/", "~", "^", "|", "&", "count", "x", "y", "z", "flip", "low", "minus");
-    private static final Set<String> OPERATION = Set.of("(", "+", "-", "*", "/", "~", "^", "|", "&", "count", "flip", "low", "minus");
-    private ArrayList<String> tokens;
+    private static final Set<String> TOKEN = Set.of("(", ")", "+", "-", "*", "/", "~", "^", "|", "&", "count", "x", "y", "z", "flip", "low");
+    private static final Set<String> OPERATION = Set.of("(", "+", "-", "*", "/", "~", "^", "|", "&", "count", "flip", "low");
+    private String nextTokens, lastToken;
     private static MakerTokens makerToken = null;
-    int ind = 0;
 
     @Override
-    public TripleExpression parse(String expression) throws UnsupportedOperationException {
-        ind = 0;
+    public TripleExpression parse(String expression) throws RuntimeException {
         makerToken = new MakerTokens(expression, ExpressionParser::charOfToken, TOKEN);
-        tokens = makerToken.getAllToken();
-        getMinus();
+        nextTokens = makerToken.nextToken();
+        lastToken = "";
         return parseOr();
-    }
-
-    private void getMinus() {
-        for (int i = 0; i < tokens.size(); i++) {
-            if (tokens.get(i).equals("-")) {
-                if (i == 0 || OPERATION.contains(tokens.get(i - 1))) {
-                    tokens.set(i, "minus");
-                }
-            }
-        }
     }
 
     private static boolean charOfToken(char ch) {
@@ -44,14 +32,14 @@ public class ExpressionParser implements Parser {
                 return new Flip(parseMaxPrior());
             case "low":
                 return new Low(parseMaxPrior());
-            case "minus":
+            case "-":
                 return new UnaryMinus(parseMaxPrior());
             case "(":
                 MultiExpression res = parseOr();
                 if (test(")")) {
                     return res;
                 } else {
-                    throw new UnsupportedOperationException("hasn't close bracket");
+                    throw new RuntimeException("hasn't close bracket");
                 }
             case "x":
             case "y":
@@ -61,7 +49,7 @@ public class ExpressionParser implements Parser {
                 try {
                     return new Const(Integer.parseUnsignedInt(s));
                 } catch (NumberFormatException e) {
-                    throw new UnsupportedOperationException("is invalid expression");
+                    throw new RuntimeException("is invalid expression");
                 }
         }
     }
@@ -80,7 +68,12 @@ public class ExpressionParser implements Parser {
     }
 
     private MultiExpression parseAddSub() {
-        MultiExpression left = parseMulDiv();
+        MultiExpression left;
+        if (getNext().equals("-") && (OPERATION.contains(lastToken) || lastToken.equals(""))) {
+            left = parseMulDiv();
+        } else {
+            left = parseMulDiv();
+        }
         while (true) {
             if (test("+")) {
                 left = new Add(left, parseMulDiv());
@@ -126,8 +119,8 @@ public class ExpressionParser implements Parser {
     }
 
     private boolean test(String s) {
-        if (getNext().equals(s)) {
-            next();
+        if (nextTokens.equals(s)) {
+            nextTokens = makerToken.nextToken();
             return true;
         } else {
             return false;
@@ -135,19 +128,17 @@ public class ExpressionParser implements Parser {
     }
 
     private String getNext() {
-        if (ind != tokens.size()) {
-            return tokens.get(ind);
-        } else {
-            return "";
-        }
+        return nextTokens;
     }
 
     private String next() {
-        if (ind != tokens.size()) {
-            return tokens.get(ind++);
+        String t = nextTokens;
+        if (makerToken.hasNext()) {
+            nextTokens = makerToken.nextToken();
         } else {
-            return "";
+            nextTokens = "";
         }
+        return t;
     }
 }
 
