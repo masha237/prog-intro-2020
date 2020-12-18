@@ -4,15 +4,13 @@ import java.util.*;
 
 public class ExpressionParser implements Parser {
     private static final Set<String> TOKEN = Set.of("(", ")", "+", "-", "*", "/", "~", "^", "|", "&", "count", "x", "y", "z", "flip", "low");
-    private static final Set<String> OPERATION = Set.of("(", "+", "-", "*", "/", "~", "^", "|", "&", "count", "flip", "low");
-    private String nextTokens, lastToken;
+    private String nextTokens;
     private static MakerTokens makerToken = null;
 
     @Override
     public TripleExpression parse(String expression) throws RuntimeException {
         makerToken = new MakerTokens(expression, ExpressionParser::charOfToken, TOKEN);
         nextTokens = makerToken.nextToken();
-        lastToken = "";
         return parseOr();
     }
 
@@ -72,10 +70,6 @@ public class ExpressionParser implements Parser {
 
     private MultiExpression parseAddSub() {
         MultiExpression left = parseMulDiv();
-//        if (getNext().equals("-") && (OPERATION.contains(lastToken) || lastToken.equals(""))) {
-//        } else {
-//            left = parseMulDiv();
-//        }
         while (true) {
             if (test("+")) {
                 left = new Add(left, parseMulDiv());
@@ -127,10 +121,6 @@ public class ExpressionParser implements Parser {
         } else {
             return false;
         }
-    }
-
-    private String getNext() {
-        return nextTokens;
     }
 
     private String next() {
