@@ -5,7 +5,8 @@ public abstract class BitUnaryOper extends UnaryOperator {
         super(expr);
     }
 
-    protected double evaluate(double x, double y) {
+    @Override
+    public double evaluate(double x) {
         throw new UnsupportedOperationException("Count hasn't double operation");
     }
 

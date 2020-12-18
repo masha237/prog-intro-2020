@@ -14,19 +14,12 @@ public class StringSource implements CharSource {
 
     @Override
     public boolean hasNext() {
-        skipSpace();
         return pos < data.length();
     }
 
     @Override
     public char next() {
         return data.charAt(pos++);
-    }
-
-    private void skipSpace() {
-        while (pos < data.length() && Character.isWhitespace(data.charAt(pos))) {
-            next();
-        }
     }
 
     public char getNext() {
@@ -50,10 +43,5 @@ public class StringSource implements CharSource {
             }
         }
         return true;
-    }
-
-    @Override
-    public ParseException error(final String message) {
-        return new ParseException(pos + ": " + message);
     }
 }

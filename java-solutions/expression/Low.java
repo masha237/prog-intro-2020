@@ -14,8 +14,4 @@ public class Low extends BitUnaryOper {
     protected String getOperator() {
         return "low";
     }
-
-    public double evaluate(double x) {
-        return evaluate(x, 0);
-    }
 }

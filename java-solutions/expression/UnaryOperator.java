@@ -1,5 +1,8 @@
 package expression;
 
+import expression.exceptions.ExpressionException;
+import expression.exceptions.OverflowException;
+
 import java.util.Objects;
 
 public abstract class UnaryOperator extends MultiExpression {
@@ -9,7 +12,7 @@ public abstract class UnaryOperator extends MultiExpression {
         this.expr = expr;
     }
 
-    public int evaluate(int x, int y, int z) {
+    public int evaluate(int x, int y, int z) throws ExpressionException {
         return evaluate(expr.evaluate(x, y, z));
     }
 

@@ -1,5 +1,8 @@
 package expression;
 
+import expression.exceptions.ExpressionException;
+import expression.exceptions.OverflowException;
+
 import java.util.Objects;
 
 public abstract class BinaryOperator extends MultiExpression {
@@ -15,7 +18,7 @@ public abstract class BinaryOperator extends MultiExpression {
 
     protected abstract double evaluate(double x, double y);
 
-    public int evaluate(int x, int y, int z) {
+    public int evaluate(int x, int y, int z) throws ExpressionException {
         int l = left.evaluate(x, y, z);
         int r = right.evaluate(x, y, z);
         return evaluate(l, r);
@@ -32,26 +35,23 @@ public abstract class BinaryOperator extends MultiExpression {
     }
 
     private boolean checkPriority(Expression a) {
-        return ((a instanceof BinaryOperator) && ((BinaryOperator) a).getPriority() < this.getPriority());
+        return ((BinaryOperator) a).getPriority() < this.getPriority();
     }
 
     private boolean associativeForRight(Expression a) {
-        if (a instanceof BinaryOperator) {
-            return (!((BinaryOperator) a).getAssociativity() || !this.getAssociativity()) && ((BinaryOperator) a).getPriority() <= this.getPriority();
-        }
-        return false;
+        return (!((BinaryOperator) a).getAssociativity() || !this.getAssociativity()) && ((BinaryOperator) a).getPriority() <= this.getPriority();
     }
 
     @Override
     public String toMiniString() {
         StringBuilder sb = new StringBuilder();
-        if (checkPriority(left)) {
+        if (left instanceof BinaryOperator && checkPriority(left)) {
             sb.append("(").append(left.toMiniString()).append(")");
         } else {
             sb.append(left.toMiniString());
         }
         sb.append(" ").append(getOperator()).append(" ");
-        if (checkPriority(right) || associativeForRight(right)) {
+        if (right instanceof BinaryOperator && (checkPriority(right) || associativeForRight(right))) {
             sb.append("(").append(right.toMiniString()).append(")");
         } else {
             sb.append(right.toMiniString());

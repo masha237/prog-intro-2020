@@ -14,8 +14,4 @@ public class Not extends BitUnaryOper {
     protected String getOperator() {
         return "~";
     }
-
-    public double evaluate(double x) {
-        return evaluate(x, 0);
-    }
 }
