@@ -8,6 +8,7 @@ public class MakerTokens {
     private static StringSource in;
     private final Predicate<Character> isTokenCharacter;
     private final Set<String> isToken;
+
     public MakerTokens(String expression, Predicate<Character> isTokenCharacter, Set<String> isToken) {
         in = new StringSource(expression);
         this.isTokenCharacter = isTokenCharacter;
@@ -26,6 +27,7 @@ public class MakerTokens {
         StringBuilder sb = new StringBuilder();
         while (hasNext()) {
             sb.append(in.next());
+            // a--
             if (isToken.contains(sb.toString())) {
                 return sb.toString();
             } else if (Character.isDigit(sb.charAt(0))) {
