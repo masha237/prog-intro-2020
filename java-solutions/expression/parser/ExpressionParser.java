@@ -33,6 +33,7 @@ public class ExpressionParser implements Parser {
             case "low":
                 return new Low(parseMaxPrior());
             case "-":
+                // -123 -> - (123)
                 return new UnaryMinus(parseMaxPrior());
             case "(":
                 MultiExpression res = parseOr();
@@ -44,9 +45,11 @@ public class ExpressionParser implements Parser {
             case "x":
             case "y":
             case "z":
+                // :NOTE: лишние переменные
                 return new Variable(s);
             default:
                 try {
+                    // :NOTE: unsigned
                     return new Const(Integer.parseUnsignedInt(s));
                 } catch (NumberFormatException e) {
                     throw new RuntimeException("is invalid expression");
@@ -68,12 +71,11 @@ public class ExpressionParser implements Parser {
     }
 
     private MultiExpression parseAddSub() {
-        MultiExpression left;
-        if (getNext().equals("-") && (OPERATION.contains(lastToken) || lastToken.equals(""))) {
-            left = parseMulDiv();
-        } else {
-            left = parseMulDiv();
-        }
+        MultiExpression left = parseMulDiv();
+//        if (getNext().equals("-") && (OPERATION.contains(lastToken) || lastToken.equals(""))) {
+//        } else {
+//            left = parseMulDiv();
+//        }
         while (true) {
             if (test("+")) {
                 left = new Add(left, parseMulDiv());
