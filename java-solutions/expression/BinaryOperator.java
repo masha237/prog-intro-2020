@@ -1,8 +1,5 @@
 package expression;
 
-import expression.exceptions.ExpressionException;
-import expression.exceptions.OverflowException;
-
 import java.util.Objects;
 
 public abstract class BinaryOperator extends MultiExpression {
@@ -18,7 +15,7 @@ public abstract class BinaryOperator extends MultiExpression {
 
     protected abstract double evaluate(double x, double y);
 
-    public int evaluate(int x, int y, int z) throws ExpressionException {
+    public int evaluate(int x, int y, int z) {
         int l = left.evaluate(x, y, z);
         int r = right.evaluate(x, y, z);
         return evaluate(l, r);
