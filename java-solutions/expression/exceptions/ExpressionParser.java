@@ -1,7 +1,5 @@
-package expression.parser;
+package expression.exceptions;
 import expression.*;
-import expression.exceptions.MissingArgumentExeption;
-import expression.exceptions.UnknownOperationException;
 
 import java.util.*;
 
@@ -21,36 +19,37 @@ public class ExpressionParser implements Parser {
         in = new StringSource(expression);
         expectedUnaryOperation = true;
         nextTokens = nextToken();
-        return parseOr();
+        TripleExpression t = parseGcdLcm();
+        if (nextTokens.length() > 0) {
+            if (nextTokens.equals(")")) {
+                throw new NegatiteBracketsBalanceException(in.getPos());
+            } else if (TOKEN.contains(nextTokens) || Character.isDigit(nextTokens.charAt(nextTokens.length() - 1))) {
+                throw new MissingOperationException(next());
+            } else {
+                throw new UnknownOperationException(next());
+            }
+        }
+        return t;
     }
 
     private MultiExpression parseMaxPrior() {
         expectedUnaryOperation = true;
         String s = next();
         switch (s) {
-            case "~":
-                return new Not(parseMaxPrior());
-            case "count":
-                return new Count(parseMaxPrior());
-            case "flip":
-                return new Flip(parseMaxPrior());
-            case "low":
-                return new Low(parseMaxPrior());
             case "-":
-                // -123 -> - (123)
-                return new UnaryMinus(parseMaxPrior());
+                return new CheckedNegate(parseMaxPrior());
             case "(":
-                MultiExpression res = parseOr();
+                MultiExpression res = parseGcdLcm();
                 if (test(")")) {
                     expectedUnaryOperation = false;
                     return res;
                 } else {
-                    throw new RuntimeException("hasn't close bracket");
+                    throw new PositiveBracketsBalanceException();
                 }
             case "sqrt":
-                return new Sqrt(parseMaxPrior());
+                return new CheckedSqrt(parseMaxPrior());
             case "abs":
-                return new Abs(parseMaxPrior());
+                return new CheckedAbs(parseMaxPrior());
             case "x":
                 return VX;
             case "y":
@@ -59,11 +58,16 @@ public class ExpressionParser implements Parser {
                 return VZ;
             default:
                 try {
-                    // :NOTE: unsigned
                     return new Const(Integer.parseInt(s));
                 } catch (NumberFormatException e) {
-                    if (TOKEN.contains(s)) {
-                        throw new MissingArgumentExeption("expected arument, found " + s);
+                    if (isNumber(s)) {
+                        throw new OverflowException("constant " + s);
+                    } else if (TOKEN.contains(s)) {
+                        throw new MissingArgumentExeption(s);
+                    } else if (s.equals(")")) {
+                        throw new NegatiteBracketsBalanceException(in.getPos());
+                    } else if (s.equals("")) {
+                        throw new MissingArgumentExeption("empty string");
                     }
                     throw new UnknownOperationException(s);
                 }
@@ -74,9 +78,9 @@ public class ExpressionParser implements Parser {
         MultiExpression left = parseMaxPrior();
         while (true) {
             if (test("*")) {
-                left = new Multiply(left, parseMaxPrior());
+                left = new CheckedMultiply(left, parseMaxPrior());
             } else if (test("/")) {
-                left = new Divide(left, parseMaxPrior());
+                left = new CheckedDivide(left, parseMaxPrior());
             } else {
                 return left;
             }
@@ -87,42 +91,22 @@ public class ExpressionParser implements Parser {
         MultiExpression left = parseMulDiv();
         while (true) {
             if (test("+")) {
-                left = new Add(left, parseMulDiv());
+                left = new CheckedAdd(left, parseMulDiv());
             } else if (test("-")) {
-                left = new Subtract(left, parseMulDiv());
+                left = new CheckedSubtract(left, parseMulDiv());
             } else {
                 return left;
             }
         }
     }
 
-    private MultiExpression parseAnd() {
+    private MultiExpression parseGcdLcm() {
         MultiExpression left = parseAddSub();
         while (true) {
-            if (test("&")) {
-                left = new And(left, parseAddSub());
-            } else {
-                return left;
-            }
-        }
-    }
-
-    private MultiExpression parseXor() {
-        MultiExpression left = parseAnd();
-        while (true) {
-            if (test("^")) {
-                left = new Xor(left, parseAnd());
-            } else {
-                return left;
-            }
-        }
-    }
-
-    private MultiExpression parseOr() {
-        MultiExpression left = parseXor();
-        while (true) {
-            if (test("|")) {
-                left = new Or(left, parseXor());
+            if (test("lcm")) {
+                left = new CheckedLcm(left, parseAddSub());
+            } else if (test("gcd")) {
+                left = new CheckedGcd(left, parseAddSub());
             } else {
                 return left;
             }
@@ -155,7 +139,7 @@ public class ExpressionParser implements Parser {
         return t;
     }
 
-     public String nextToken() {
+    public String nextToken() {
         StringBuilder sb = new StringBuilder();
         if (!hasNext()) {
             return "";
@@ -167,15 +151,20 @@ public class ExpressionParser implements Parser {
         }
         sb.append(ch);
         if (Character.isLetter(ch)) {
-            while (Character.isLetter(getNext())) {
+            while (Character.isLetter(getNext()) || Character.isDigit(getNext())) {
                 sb.append(nextC());
             }
         } else if (Character.isDigit(ch)) {
             while (Character.isDigit(getNext())) {
                 sb.append(nextC());
             }
+            return sb.toString();
         }
-        return sb.toString();
+        if (TOKEN.contains(sb.toString())){
+            return sb.toString();
+        } else {
+            throw new UnknownOperationException(sb.toString());
+        }
     }
 
     public boolean hasNext() {

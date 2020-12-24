@@ -24,7 +24,7 @@ public class Add extends BinaryOperator {
     }
 
     @Override
-    protected char getOperator() {
-        return '+';
+    protected String getOperator() {
+        return "+";
     }
 }

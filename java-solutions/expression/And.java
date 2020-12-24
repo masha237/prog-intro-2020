@@ -20,7 +20,7 @@ public class And extends BitBinaryOper {
     }
 
     @Override
-    protected char getOperator() {
-        return '&';
+    protected String getOperator() {
+        return "&";
     }
 }

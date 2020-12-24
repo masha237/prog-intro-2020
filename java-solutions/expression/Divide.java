@@ -24,7 +24,7 @@ public class Divide extends BinaryOperator {
     }
 
     @Override
-    protected char getOperator() {
-        return '/';
+    protected String getOperator() {
+        return "/";
     }
 }

@@ -21,7 +21,7 @@ public class Or extends BitBinaryOper {
     }
 
     @Override
-    protected char getOperator() {
-        return '|';
+    protected String getOperator() {
+        return "|";
     }
 }

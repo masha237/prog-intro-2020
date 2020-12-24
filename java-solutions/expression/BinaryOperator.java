@@ -74,5 +74,5 @@ public abstract class BinaryOperator extends MultiExpression {
         return Objects.hash(left, right, getOperator());
     }
 
-    abstract protected char getOperator();
+    abstract protected String getOperator();
 }
