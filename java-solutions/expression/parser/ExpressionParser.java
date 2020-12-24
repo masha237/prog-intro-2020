@@ -1,6 +1,6 @@
 package expression.parser;
 import expression.*;
-import expression.exceptions.MissingArgumentExeption;
+import expression.exceptions.MissingArgumentException;
 import expression.exceptions.UnknownOperationException;
 
 import java.util.*;
@@ -63,7 +63,7 @@ public class ExpressionParser implements Parser {
                     return new Const(Integer.parseInt(s));
                 } catch (NumberFormatException e) {
                     if (TOKEN.contains(s)) {
-                        throw new MissingArgumentExeption("expected arument, found " + s);
+                        throw new MissingArgumentException("expected arument, found " + s);
                     }
                     throw new UnknownOperationException(s);
                 }

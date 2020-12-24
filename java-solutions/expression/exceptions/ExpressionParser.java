@@ -10,6 +10,7 @@ public class ExpressionParser implements Parser {
     private boolean expectedUnaryOperation = true;
     private String nextTokens;
     private StringSource in;
+    private int ind;
     public static final Variable VX = new Variable("x");
     public static final Variable VY = new Variable("y");
     public static final Variable VZ = new Variable("z");
@@ -22,11 +23,11 @@ public class ExpressionParser implements Parser {
         TripleExpression t = parseGcdLcm();
         if (nextTokens.length() > 0) {
             if (nextTokens.equals(")")) {
-                throw new NegatiteBracketsBalanceException(in.getPos());
+                throw new NegatiteBracketsBalanceException(getInd() + 1);
             } else if (TOKEN.contains(nextTokens) || Character.isDigit(nextTokens.charAt(nextTokens.length() - 1))) {
-                throw new MissingOperationException(next());
+                throw new MissingOperationException(next() + ": " + (getInd() + 1));
             } else {
-                throw new UnknownOperationException(next());
+                throw new UnknownOperationException(next() + ": " + (getInd() + 1));
             }
         }
         return t;
@@ -44,7 +45,7 @@ public class ExpressionParser implements Parser {
                     expectedUnaryOperation = false;
                     return res;
                 } else {
-                    throw new PositiveBracketsBalanceException();
+                    throw new PositiveBracketsBalanceException(getInd()); // ind in string
                 }
             case "sqrt":
                 return new CheckedSqrt(parseMaxPrior());
@@ -61,15 +62,15 @@ public class ExpressionParser implements Parser {
                     return new Const(Integer.parseInt(s));
                 } catch (NumberFormatException e) {
                     if (isNumber(s)) {
-                        throw new OverflowException("constant " + s);
+                        throw new OverflowException("constant " + s + ": " + getInd());
                     } else if (TOKEN.contains(s)) {
-                        throw new MissingArgumentExeption(s);
+                        throw new MissingArgumentException(s + ": " + getInd());
                     } else if (s.equals(")")) {
-                        throw new NegatiteBracketsBalanceException(in.getPos());
-                    } else if (s.equals("")) {
-                        throw new MissingArgumentExeption("empty string");
+                        throw new NegatiteBracketsBalanceException(getInd());
+                    } else if (s.isEmpty()) {
+                        throw new MissingArgumentException("empty string" + ": " + (getInd()));
                     }
-                    throw new UnknownOperationException(s);
+                    throw new UnknownOperationException(s + ": " + getInd());
                 }
         }
     }
@@ -115,6 +116,7 @@ public class ExpressionParser implements Parser {
 
     private boolean test(String s) {
         if (nextTokens.equals(s)) {
+            ind++;
             nextTokens = nextToken();
             return true;
         } else {
@@ -128,6 +130,7 @@ public class ExpressionParser implements Parser {
 
     private String next() {
         String t = nextTokens;
+        ind++;
         if (VARIABLES.contains(t) || isNumber(t)) {
             expectedUnaryOperation = false;
         }
@@ -163,7 +166,7 @@ public class ExpressionParser implements Parser {
         if (TOKEN.contains(sb.toString())){
             return sb.toString();
         } else {
-            throw new UnknownOperationException(sb.toString());
+            throw new UnknownOperationException(sb.toString() + ": " + (getInd() + 1));
         }
     }
 
@@ -172,6 +175,9 @@ public class ExpressionParser implements Parser {
         return in.hasNext();
     }
 
+    public int getInd() {
+        return ind;
+    }
     public char getNext() {
         return in.getNext();
     }

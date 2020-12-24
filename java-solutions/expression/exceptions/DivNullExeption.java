@@ -1,7 +1,7 @@
 package expression.exceptions;
 
 public class DivNullExeption extends EvaluatingException {
-    public DivNullExeption() {
-        super("division by zero");
+    public DivNullExeption(String s) {
+        super("division by zero" + s);
     }
 }
