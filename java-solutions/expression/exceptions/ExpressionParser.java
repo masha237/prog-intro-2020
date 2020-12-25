@@ -62,15 +62,15 @@ public class ExpressionParser implements Parser {
                     return new Const(Integer.parseInt(s));
                 } catch (NumberFormatException e) {
                     if (isNumber(s)) {
-                        throw new OverflowException("constant " + s + ": " + getInd());
+                        throw new OverflowException("constant " + s + ": " + (getInd() - s.length() + 1));
                     } else if (TOKEN.contains(s)) {
-                        throw new MissingArgumentException(s + ": " + getInd());
+                        throw new MissingArgumentException(s + ": " + (getInd() - s.length() + 1));
                     } else if (s.equals(")")) {
                         throw new NegatiteBracketsBalanceException(getInd());
                     } else if (s.isEmpty()) {
-                        throw new MissingArgumentException("empty string" + ": " + (getInd()));
+                        throw new MissingArgumentException("empty string" + ": " + (getInd() + 1));
                     }
-                    throw new UnknownOperationException(s + ": " + getInd());
+                    throw new UnknownOperationException(s + ": " + (getInd() - s.length() + 1));
                 }
         }
     }
@@ -116,7 +116,7 @@ public class ExpressionParser implements Parser {
 
     private boolean test(String s) {
         if (nextTokens.equals(s)) {
-            ind++;
+            ind = getPos();
             nextTokens = nextToken();
             return true;
         } else {
@@ -125,12 +125,12 @@ public class ExpressionParser implements Parser {
     }
 
     boolean isNumber(String s) {
-        return s.length() != 0 && Character.isDigit(s.charAt(s.length() - 1));
+        return !s.isEmpty() && Character.isDigit(s.charAt(s.length() - 1));
     }
 
     private String next() {
         String t = nextTokens;
-        ind++;
+        ind = getPos();
         if (VARIABLES.contains(t) || isNumber(t)) {
             expectedUnaryOperation = false;
         }
@@ -166,7 +166,7 @@ public class ExpressionParser implements Parser {
         if (TOKEN.contains(sb.toString())){
             return sb.toString();
         } else {
-            throw new UnknownOperationException(sb.toString() + ": " + (getInd() + 1));
+            throw new UnknownOperationException(sb.toString() + ": " + (getPos() - sb.length() + 1));
         }
     }
 
@@ -190,6 +190,10 @@ public class ExpressionParser implements Parser {
         while (Character.isWhitespace(in.getNext())) {
             in.next();
         }
+    }
+
+    private int getPos() {
+        return in.getPos();
     }
 }
 
